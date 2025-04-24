@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>電影選位系統</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      padding: 20px;
+      text-align: center;
+    }
+    .screen {
+      background: #ccc;
+      height: 50px;
+      margin: 20px auto;
+      width: 60%;
+      border-radius: 5px;
+    }
+    .seats {
+      display: grid;
+      grid-template-columns: repeat(8, 40px);
+      gap: 10px;
+      justify-content: center;
+      margin: 20px auto;
+    }
+    .seat {
+      width: 40px;
+      height: 40px;
+      background: #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .seat.selected {
+      background: #6feaf6;
+    }
+    .seat.occupied {
+      background: #444;
+      cursor: not-allowed;
+    }
+    .legend {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      gap: 30px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .legend-item .box {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎬 電影選位系統</h1>
+  <div class="screen"></div>
+  <div class="seats" id="seats-container"></div>
+  <div class="legend">
+    <div class="legend-item"><div class="box" style="background:#ddd;"></div>可選</div>
+    <div class="legend-item"><div class="box" style="background:#444;"></div>已售</div>
+    <div class="legend-item"><div class="box" style="background:#6feaf6;"></div>已選</div>
+  </div>
+  <p id="selected-count">已選座位：0</p>
+
+  <script>
+    const seatContainer = document.getElementById("seats-container");
+    const selectedCount = document.getElementById("selected-count");
+
+    const rows = 5;
+    const cols = 8;
+
+    function renderSeats() {
+      for (let i = 0; i < rows * cols; i++) {
+        const seat = document.createElement("div");
+        seat.classList.add("seat");
+
+        // 模擬部分已佔用
+        if (Math.random() < 0.2) {
+          seat.classList.add("occupied");
+        }
+
+        seat.addEventListener("click", () => {
+          if (!seat.classList.contains("occupied")) {
+            seat.classList.toggle("selected");
+            updateCount();
+          }
+        });
+
+        seatContainer.appendChild(seat);
+      }
+    }
+
+    function updateCount() {
+      const selectedSeats = document.querySelectorAll(".seat.selected");
+      selectedCount.textContent = `已選座位：${selectedSeats.length}`;
+    }
+
+    renderSeats();
+  </script>
+</body>
+</html>
